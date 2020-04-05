@@ -1,3 +1,19 @@
+
+
+## configure project
+```
+cd react_briscola
+npm install
+```
+
+Start locally on port 3000
+```
+npm start
+```
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

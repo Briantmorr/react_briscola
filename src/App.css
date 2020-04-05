@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height:100vh;
 }
 
 .App-logo {
@@ -35,4 +36,25 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+#game-body {
+  background-image: url('./temp_assets/table.jpg');
+  background-size:cover;
+  height:100vh;
+}
+
+.player-cards {
+  display: inline;
+}
+
+.ui.inverted.segment.player-hand{
+  text-align: center;
+  position:fixed;
+  bottom:1em;
+  border-top:white solid 5px;
+}
+
+.ui.horizontal.list>.item.card-list {
+  margin-left:0.5em;
 }
