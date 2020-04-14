@@ -11,7 +11,12 @@ Start locally on port 3000
 npm start
 ```
 
-
+TODO:
+Implement:
+* Bid phase
+* Playable cards
+* draggable cards in hand
+* draggable cards to play.
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

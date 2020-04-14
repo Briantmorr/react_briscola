@@ -1,10 +1,12 @@
 import React from "react";
-import { Container, Image } from "semantic-ui-react";
+import { Container, Image, Button } from "semantic-ui-react";
 import { API } from "../../service/api.js";
 
+import PlayerTracker from '../playertracker';
 import card_back from '../../temp_assets/card_back1.jpg'
-import Board from "../board.js";
-import Hand from "../hand.js"
+import Board from "../board";
+import Hand from "../hand"
+import Deck from "../deck";
 
 export class Game extends React.Component {
   constructor(props) {
@@ -12,7 +14,7 @@ export class Game extends React.Component {
 
     this.state = {
       isLoaded: false,
-      groups: []
+      phase: "deal" 
     };
   }
 
@@ -38,13 +40,20 @@ export class Game extends React.Component {
   }
 
   render() {
-    
+      let players = [
+        {name:"bob", status:"active"}, 
+        {name:"jim", status:"inactive"},
+        {name:"matt", status:"inactive"},
+        {name:"john", status:"inactive"},
+        {name:"jenkins", status:"inactive"}
+      ];    
+      let boardContents = <Deck/>
+   
     return (
       <React.Fragment>
         <Container>
-
-          <Image src={card_back} size='small' />
-          <Board/>
+          <Board boardContents={boardContents} />
+          <PlayerTracker players={players} />
           <Hand/>
         </Container>
       </React.Fragment>

@@ -69,7 +69,7 @@ export class PrivateRoutes extends React.Component {
         <div id="game-body">
 
         <Grid centered columns={3}>
-          <Grid.Column width={12}>
+          <Grid.Column className="boardContainer" width={12}>
             <Router>
               <Game path="/" name="game" />
             </Router>
