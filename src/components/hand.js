@@ -1,69 +1,70 @@
 import React from "react";
-import { Segment, List, Image } from "semantic-ui-react"
+import Card from './card';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-class Hand extends React.Component {
-  constructor(props) {
-    super(props);
-    this.cardNames = [];
-    this.state = {
-      cards:[
-          ""
-      ],
-      company:''
-    }
-    this.images = require.context('../../public/assets', true);
-  }
-
-  seedCardNames = () => {
-    const suites = ["hearts", "diamonds", "clubs", "spades"];
-    const number = ['2', '3', '4', '5', '6', '7', '8', 'jack', 'queen', 'king', 'ace'];
-    suites.forEach(suite => {
-        number.forEach(number => {
-            const composed_name = number + "_of_" + suite + ".png";
-            this.cardNames.push(composed_name)
-        })
-    });
-    console.log(this.cardNames);
-  }
-
-  // super dump first implementation
-  getHand = (handSize) => {
-    console.log(Math.random());
-    let handArray = [];
-    for(let i = 0; i < handSize; i++) {
-        let random = Math.floor(Math.random() * 40);
-        handArray.push(this.cardNames[random]);
-    }
-
-    return handArray;
-  }
+export default function Hand(props) {
   
+  const grid = 8;
 
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: 'none',
+    // padding: grid * 2,
+    margin: `0 ${grid}px 0 0`,
+  
+    // change background colour if dragging
+  
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  });
+  
+  const getListStyle = isDraggingOver => ({
+    display: "flex",
+    padding: grid,
+    overflow: "auto",
+  });
 
-
-  render() {
-      this.seedCardNames();
-    let handNames = this.getHand(8);
-    console.log('hand array is ', handNames );
-    let cardImages = handNames.map(card_name => {
-
-        console.log('card name is ', card_name);
-        const url = this.images("./playing_cards/PNG-cards-1.3/" + card_name);
-
+  let cardImages = "";
+  if(props.player_hand) {
+    cardImages = props.player_hand.map((cardObject, index) => {
+        const url = props.cardImages("./playing_cards/PNG-cards-1.3/" + cardObject.name);
         return(
-            <List.Item className="card-list">
-                <Image src={url} size='tiny' />
-            </List.Item>
+          <Draggable key={String(cardObject.id)} draggableId={String(cardObject.id)} index={index}>
+            {(provided, snapshot) => (
+               <div
+               ref={provided.innerRef}
+               {...provided.draggableProps}
+               {...provided.dragHandleProps}
+               style={getItemStyle(
+                 snapshot.isDragging,
+                 provided.draggableProps.style
+               )}
+             >
+                  <Card url={url} id={cardObject.id} />
+              </div>
+            )}
+          </Draggable>
         );
-    })
-    return (
-        <Segment inverted className="player-hand">
-            <List horizontal>
-                {cardImages}
-            </List>
-        </Segment>
-    );
+    });
   }
-}
 
-export default Hand;
+  return (
+    <div className="center">
+      <Droppable droppableId="droppable" direction="horizontal">
+        {(provided, snapshot) => (
+          <div
+          ref={provided.innerRef}
+          style={getListStyle(snapshot.isDraggingOver)}
+          {...provided.droppableProps}
+
+          className="player-hand"
+        >
+            {cardImages}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+
+    </div>
+  );
+}

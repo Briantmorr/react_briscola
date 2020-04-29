@@ -50,7 +50,6 @@ export class Login extends React.Component {
   }
 
   handleGuest = (e) => {
-      console.log('here');
       e.preventDefault();
       // use entered name or get random
         if(this.state.name === '') {

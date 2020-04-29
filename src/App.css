@@ -48,12 +48,12 @@
   display: inline;
 }
 
-.ui.inverted.segment.player-hand{
+.player-hand{
   text-align: center;
   position:fixed;
   bottom:1em;
   border-top:white solid 5px;
-  left:25%;
+  background-color: rgba(0,0,0, 0.65);
 }
 
 .ui.horizontal.list>.item.card-list {
@@ -80,4 +80,32 @@
   background-color: rgba(0,0,0, 0.65);
   border:solid;
   margin-top:10px;
+}
+
+.center{
+  display:flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.centerCardTable{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translateX(-50%) translateY(-50%);
+  border: solid 5px grey;
+  width: inherit;
+}
+
+.cardTable{
+  background-color: rgba(0,0,0, 1);
+  /* border:grey solid 1px; */
+}
+
+.cardTableCards{
+  /* margin: 0 20px 0 0; */
+}
+
+.inactive{
+  opacity: 25%;
 }
