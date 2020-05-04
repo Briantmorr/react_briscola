@@ -7,6 +7,7 @@ import card_back from '../../temp_assets/card_back1.jpg'
 import Board from "../board";
 import Hand from "../hand"
 import Deck from "../deck";
+import Bid from "../bid";
 import { CardTable } from "../cardTable";
 import { DragDropContext } from "react-beautiful-dnd";
 
@@ -24,7 +25,9 @@ export class Game extends React.Component {
       deck: [],
       hands: [],
       activeCards: this.getPlaceholders(5),
-      phase: "deal" 
+      phase: "deal",
+      currentBid: 0,
+      playerBid: 80,
     };
 
   }
@@ -85,7 +88,7 @@ export class Game extends React.Component {
 
     this.setState({
       hands: hands,
-      phase: "play"
+      phase: "bid"
     });
   }
 
@@ -100,6 +103,27 @@ export class Game extends React.Component {
             console.log(counter)
       }
       return hand;
+  }
+
+  handlePlayerBidChange = (playerBid) => {
+    // if bid is maxed or sometihg, just end timer
+    this.setState({playerBid})
+  }
+  handlePlayerBid = () => {
+    // calculate new default player bid
+    // this requires webhooks to properly work, and this is just a Proof of Concept 
+
+    this.setState({currentBid: this.state.playerBid}, () => {
+      let currentPlayerBid = this.state.playerBid;
+      if (currentPlayerBid <= this.state.currentBid && this.state.currentBid !== 120) {
+        currentPlayerBid = parseInt(this.state.currentBid) + 1;
+      }
+      this.setState({playerBid:currentPlayerBid})
+    })
+  }
+  handleBidComplete = () => {
+    console.log('bidding phase is over');
+    this.setState({phase:'play'})
   }
 
   move = (source, activeCards, droppableSource, droppableDestination) => {
@@ -192,7 +216,13 @@ export class Game extends React.Component {
       }
    
       if(this.state.phase === 'bid') {
-        boardContents = <div>test</div>;
+        boardContents = <Bid 
+                          handlePlayerBid={this.handlePlayerBid} 
+                          handlePlayerBidChange={this.handlePlayerBidChange} 
+                          playerBid={this.state.playerBid} 
+                          currentBid={this.state.currentBid} 
+                          handleBidComplete={this.handleBidComplete}
+                        />;
       }
 
       if(this.state.phase === 'play') {
